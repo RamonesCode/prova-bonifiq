@@ -3,19 +3,26 @@ using ProvaPub.Repository;
 
 namespace ProvaPub.Services
 {
-	public class ProductService
-	{
-		TestDbContext _ctx;
+    public class ProductService
+    {
 
-		public ProductService(TestDbContext ctx)
-		{
-			_ctx = ctx;
-		}
+        private readonly TestDbContext _testDbContext;
 
-		public ProductList  ListProducts(int page)
-		{
-			return new ProductList() {  HasNext=false, TotalCount =10, Products = _ctx.Products.ToList() };
-		}
+        public ProductService(TestDbContext testDbContext)
+        {
+            _testDbContext = testDbContext;
+        }
 
-	}
+        public ProductList ListProducts(int page)
+        {
+            int pageSize = 10; //10 produtos por pag.
+            int totalCount = _testDbContext.Products.Count(); // verifica qntd total de itens
+            int skip = (page - 1) * pageSize;
+            List<Product> products = _testDbContext.Products.Skip(skip).Take(pageSize).ToList();
+            bool hasNext = skip + pageSize <= totalCount;
+
+            return new ProductList() { HasNext = hasNext, TotalCount = totalCount, Items = products };
+        }
+
+    }
 }

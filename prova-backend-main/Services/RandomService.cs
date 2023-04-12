@@ -9,7 +9,7 @@
 		}
 		public int GetRandom()
 		{
-			return new Random(seed).Next(100);
+			return new Random().Next(100);
 		}
 
 	}

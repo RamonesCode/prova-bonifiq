@@ -9,11 +9,18 @@ namespace ProvaPub.Repository
 
 	public class TestDbContext : DbContext
 	{
-		public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
+        private TestDbContext dbContext;
+
+        public TestDbContext(DbContextOptions<TestDbContext> options) : base(options)
 		{
 		}
 
-		protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public TestDbContext(TestDbContext dbContext)
+        {
+            this.dbContext = dbContext;
+        }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
 		{
 			base.OnModelCreating(modelBuilder);
 
